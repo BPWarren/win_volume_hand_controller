@@ -1,2 +1,2 @@
-./basics.py
-./__pycache__
+basics.py
+__pycache__
