@@ -7,24 +7,24 @@ import hand_tracking_module as htm
 
 import pyautogui
 
-from ctypes import cast, POINTER
-from comtypes import CLSCTX_ALL
-from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
+# from ctypes import cast, POINTER
+# from comtypes import CLSCTX_ALL
+# from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 
 
-def win_volume_control(volume):
-    devices = AudioUtilities.GetSpeakers()
-    interface = devices.Activate(
-        IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
-    volume = cast(interface, POINTER(IAudioEndpointVolume))
-    #volume.GetMute()
-    #volume.GetMasterVolumeLevel()
-    print(volume.GetVolumeRange())
-    volume.SetMasterVolumeLevel(volume, None)
+# def win_volume_control(volume):
+#     devices = AudioUtilities.GetSpeakers()
+#     interface = devices.Activate(
+#         IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
+#     volume = cast(interface, POINTER(IAudioEndpointVolume))
+#     #volume.GetMute()
+#     #volume.GetMasterVolumeLevel()
+#     print(volume.GetVolumeRange())
+#     volume.SetMasterVolumeLevel(volume, None)
 
-def linux_volume_control(volume):
+# def linux_volume_control(volume):
 
-    pass
+#     pass
 
 # Initialisations
 cap = cv2.VideoCapture(0)
@@ -32,13 +32,8 @@ detector = htm.HandDetector()
 
 cur_time = 0
 prev_time = 0
-
-
-
-
-
-
-
+min_vol = -65
+max_vol = 0
 
 while True:
     success, img =  cap.read()
@@ -66,7 +61,10 @@ while True:
         cv2.circle(img, ((clm4_x+clm8_x)//2, (clm4_y+clm8_y)//2), 7, (255,0, 0), cv2.FILLED)
 
         control_lenth = math.hypot(clm4_x-clm8_x, clm4_y-clm8_y)
-        print(control_lenth)
+        
+        volume = np.interp(control_lenth, [18, 160], [min_vol, max_vol])
+        
+        
 
         if control_lenth<18:
             cv2.circle(img, ((clm4_x+clm8_x)//2, (clm4_y+clm8_y)//2), 7, (48, 79, 254), cv2.FILLED)
