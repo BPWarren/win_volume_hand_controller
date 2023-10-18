@@ -31,6 +31,8 @@ prev_time = 0
 min_vol = -65
 max_vol = 0
 
+vol_mark = 0
+vol_percent = 0
 while True:
     success, img =  cap.read()
     if not success:
@@ -51,8 +53,8 @@ while True:
         clm4_x, clm4_y= lm_list[4][1], lm_list[4][2]
         clm8_x, clm8_y = lm_list[8][1], lm_list[8][2]
 
-        cv2.circle(img, (clm4_x, clm4_y), 11, (255, 0, 255), cv2.FILLED)
-        cv2.circle(img, (clm8_x, clm8_y), 11, (255, 0, 255), cv2.FILLED)
+        cv2.circle(img, (clm4_x, clm4_y), 11, (255, 0, 0), cv2.FILLED)
+        cv2.circle(img, (clm8_x, clm8_y), 11, (255, 0, 0), cv2.FILLED)
         cv2.line(img, (clm4_x, clm4_y), (clm8_x, clm8_y), (255,0, 0), 2)
         cv2.circle(img, ((clm4_x+clm8_x)//2, (clm4_y+clm8_y)//2), 7, (255,0, 0), cv2.FILLED)
 
@@ -67,6 +69,12 @@ while True:
         
         elif control_lenth>160:
             cv2.circle(img, ((clm4_x+clm8_x)//2, (clm4_y+clm8_y)//2), 7, (0, 200, 83), cv2.FILLED)
+
+        cv2.rectangle(img, (50, 300), (80, 100), (255, 0, 0), 3)
+        vol_mark = np.interp(control_lenth, [18, 160], [300, 100])
+        cv2.rectangle(img, (50, 300), (80, int(vol_mark)), (255, 0, 0), cv2.FILLED)
+        vol_percent = np.interp(control_lenth, [18, 160], [0, 100])
+        cv2.putText(img, "{}%".format(str(int(vol_percent))), (30,350), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 0, 0), 1)
 
 
 
