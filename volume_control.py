@@ -5,7 +5,6 @@ import time
 import math
 import hand_tracking_module as htm
 
-import pyautogui
 
 # from ctypes import cast, POINTER
 # from comtypes import CLSCTX_ALL
@@ -22,9 +21,6 @@ import pyautogui
 #     print(volume.GetVolumeRange())
 #     volume.SetMasterVolumeLevel(volume, None)
 
-# def linux_volume_control(volume):
-
-#     pass
 
 # Initialisations
 cap = cv2.VideoCapture(0)
@@ -62,8 +58,8 @@ while True:
 
         control_lenth = math.hypot(clm4_x-clm8_x, clm4_y-clm8_y)
         
-        volume = np.interp(control_lenth, [18, 160], [min_vol, max_vol])
-        
+        volume_size = np.interp(control_lenth, [18, 160], [min_vol, max_vol])
+        #win_volume_control(volume_size)
         
 
         if control_lenth<18:
